@@ -33,6 +33,7 @@ public class CourseEntity {
     @Length(min = 10, max = 100, message = "A descrição deve conter entre (10) e (200) caracteres")
     private String description;
 
+    @NotBlank(message = "A categoria é obrigatória")
     private String category;
 
     private CourseStatus active;
