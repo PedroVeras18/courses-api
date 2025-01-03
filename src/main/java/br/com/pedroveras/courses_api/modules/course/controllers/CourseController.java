@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.pedroveras.courses_api.modules.course.dto.CreateCourseDTO;
 import br.com.pedroveras.courses_api.modules.course.dto.UpdateCourseDTO;
 import br.com.pedroveras.courses_api.modules.course.useCases.CreateCourseUseCase;
+import br.com.pedroveras.courses_api.modules.course.useCases.DeleteCourseUseCase;
 import br.com.pedroveras.courses_api.modules.course.useCases.ListCoursesUseCase;
 import br.com.pedroveras.courses_api.modules.course.useCases.UpdateCourseUseCase;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,6 +34,9 @@ public class CourseController {
 
     @Autowired
     private UpdateCourseUseCase updateCourseUseCase;
+
+    @Autowired
+    private DeleteCourseUseCase deleteCourseUseCase;
     
     @PostMapping("/")
     public ResponseEntity<Object> create(@Valid @RequestBody CreateCourseDTO createCourseDTO) {
@@ -62,4 +67,15 @@ public class CourseController {
         }
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> deleteCourse(
+        @PathVariable UUID id
+    ) {
+        try {
+            this.deleteCourseUseCase.execute(id);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }
