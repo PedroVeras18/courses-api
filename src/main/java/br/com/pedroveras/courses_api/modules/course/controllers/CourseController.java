@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -18,6 +19,7 @@ import br.com.pedroveras.courses_api.modules.course.dto.UpdateCourseDTO;
 import br.com.pedroveras.courses_api.modules.course.useCases.CreateCourseUseCase;
 import br.com.pedroveras.courses_api.modules.course.useCases.DeleteCourseUseCase;
 import br.com.pedroveras.courses_api.modules.course.useCases.ListCoursesUseCase;
+import br.com.pedroveras.courses_api.modules.course.useCases.ToggleCourseActiveStatusUseCase;
 import br.com.pedroveras.courses_api.modules.course.useCases.UpdateCourseUseCase;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -34,6 +36,9 @@ public class CourseController {
 
     @Autowired
     private UpdateCourseUseCase updateCourseUseCase;
+
+    @Autowired
+    private ToggleCourseActiveStatusUseCase toggleCourseActiveStatusUseCase;
 
     @Autowired
     private DeleteCourseUseCase deleteCourseUseCase;
@@ -61,6 +66,16 @@ public class CourseController {
     ) {
         try {
             this.updateCourseUseCase.execute(id, updateCourseDTO);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PatchMapping("/{id}/active")
+    public ResponseEntity<Object> toggleActiveCourse(@PathVariable UUID id) {
+        try {
+            this.toggleCourseActiveStatusUseCase.execute(id);
             return ResponseEntity.noContent().build();
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
