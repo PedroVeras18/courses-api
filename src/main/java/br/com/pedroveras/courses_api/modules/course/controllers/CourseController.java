@@ -45,12 +45,8 @@ public class CourseController {
     
     @PostMapping("/")
     public ResponseEntity<Object> create(@Valid @RequestBody CreateCourseDTO createCourseDTO) {
-        try {
-            var result = createCourseUseCase.execute(createCourseDTO);
-            return ResponseEntity.ok().body(result);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        var result = createCourseUseCase.execute(createCourseDTO);
+        return ResponseEntity.ok().body(result);
     }
 
     @GetMapping("/list")
@@ -64,33 +60,21 @@ public class CourseController {
         @PathVariable UUID id,
         @Valid @RequestBody UpdateCourseDTO updateCourseDTO
     ) {
-        try {
-            this.updateCourseUseCase.execute(id, updateCourseDTO);
-            return ResponseEntity.noContent().build();
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        this.updateCourseUseCase.execute(id, updateCourseDTO);
+        return ResponseEntity.noContent().build();
     }
 
     @PatchMapping("/{id}/active")
     public ResponseEntity<Object> toggleActiveCourse(@PathVariable UUID id) {
-        try {
-            this.toggleCourseActiveStatusUseCase.execute(id);
-            return ResponseEntity.noContent().build();
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        this.toggleCourseActiveStatusUseCase.execute(id);
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteCourse(
         @PathVariable UUID id
     ) {
-        try {
-            this.deleteCourseUseCase.execute(id);
-            return ResponseEntity.noContent().build();
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        this.deleteCourseUseCase.execute(id);
+        return ResponseEntity.noContent().build();
     }
 }
