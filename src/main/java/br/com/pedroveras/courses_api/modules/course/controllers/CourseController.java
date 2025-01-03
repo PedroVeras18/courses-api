@@ -22,7 +22,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/courses")
-public class CouseController {
+public class CourseController {
 
     @Autowired
     private CreateCourseUseCase createCourseUseCase;
