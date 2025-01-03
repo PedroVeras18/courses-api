@@ -22,12 +22,12 @@ public class CreateCourseUseCase {
     public CourseIdDTO execute(CreateCourseDTO createCourseDTO) {
       CourseEntity courseEntity = courseMapper.toEntity(createCourseDTO);
 
-        this.courseRepository.findByName(courseEntity.getName()).ifPresent(course -> {
-          throw new CourseFoundException();
-        });
+      this.courseRepository.findByName(courseEntity.getName()).ifPresent(course -> {
+        throw new CourseFoundException();
+      });
 
-        CourseEntity savedCourse = this.courseRepository.save(courseEntity);
+      CourseEntity savedCourse = this.courseRepository.save(courseEntity);
 
-        return new CourseIdDTO(savedCourse.getId());
+      return new CourseIdDTO(savedCourse.getId());
     }
 }

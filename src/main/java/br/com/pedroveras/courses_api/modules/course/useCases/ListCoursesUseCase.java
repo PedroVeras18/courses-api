@@ -1,5 +1,6 @@
 package br.com.pedroveras.courses_api.modules.course.useCases;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,14 +21,16 @@ public class ListCoursesUseCase {
     public List<ListCourseDTO> execute(){
         List<CourseEntity> courses = this.courseRepository.findAll();
 
-        return courses.stream().map(course -> new ListCourseDTO(
-            course.getId(),
-            course.getName(),
-            course.getDescription(),
-            course.getCategory(),
-            course.getActive() == CourseStatus.ACTIVE,
-            course.getCreatedAt(),
-            course.getUpdatedAt()
-        )).collect(Collectors.toList());
+        return courses.stream()
+            .sorted(Comparator.comparing(CourseEntity::getCreatedAt))
+            .map(course -> new ListCourseDTO(
+                course.getId(),
+                course.getName(),
+                course.getDescription(),
+                course.getCategory(),
+                course.getActive() == CourseStatus.ACTIVE,
+                course.getCreatedAt(),
+                course.getUpdatedAt()
+            )).collect(Collectors.toList());
     }
 }
